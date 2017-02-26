@@ -4,10 +4,6 @@ examples/
 .ipynb_checkpoints/
 visualize_cnn.png
 .~lock.signnames.csv#
-checkpoint
-lenet.data*
-lenet.index
-lenet.meta*
 *.sw*
 
 # Byte-compiled / optimized / DLL files
