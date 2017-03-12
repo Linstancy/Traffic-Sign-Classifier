@@ -36,7 +36,7 @@ The goals / steps of this project are the following:
 
 ####1. Provide a Writeup / README that includes all the rubric points and how you addressed each one. You can submit your writeup as markdown or pdf. You can use this template as a guide for writing the report. The submission includes the project code.
 
-You're reading it! and here is a link to my [project code](https://github.com/udacity/CarND-Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
+You're reading it! and here is a link to my [project code](https://github.com/rajkn90/Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
 
 ###Data Set Summary & Exploration
 
@@ -44,19 +44,19 @@ You're reading it! and here is a link to my [project code](https://github.com/ud
 
 The code for this step is contained in the second code cell of the IPython notebook.  
 
-I used the pandas library to calculate summary statistics of the traffic
+I used the numpy library to calculate summary statistics of the traffic
 signs data set:
 
-* The size of training set is ?
-* The size of test set is ?
-* The shape of a traffic sign image is ?
-* The number of unique classes/labels in the data set is ?
+* The size of training set is 34799 images
+* The size of test set is 12630 images
+* The shape of a traffic sign image is (32, 32, 3) unsigned integer numpy array
+* The number of unique classes/labels in the data set is 43
 
 ####2. Include an exploratory visualization of the dataset and identify where the code is in your code file.
 
 The code for this step is contained in the third code cell of the IPython notebook.  
 
-Here is an exploratory visualization of the data set. It is a bar chart showing how the data ...
+Here is an exploratory visualization of the data set. It is a bar chart showing how the histogram of labels in the training, validation and test set individually and also in the overall dataset. Different traffic signs occur in different frequencies and in real world, this may be the case since some traffic signs are displayed more than the other in any given city or country. This prior distribution of labels is unchanged while training the network owing to the fact that we want our neural network to know this real-world distribution and learn to classify more frequent traffic signs better than the others. 
 
 ![alt text][image1]
 
@@ -64,7 +64,7 @@ Here is an exploratory visualization of the data set. It is a bar chart showing 
 
 ####1. Describe how, and identify where in your code, you preprocessed the image data. What tecniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc.
 
-The code for this step is contained in the fourth code cell of the IPython notebook.
+The code for this step is contained in the fifth code cell of the IPython notebook.
 
 As a first step, I decided to convert the images to grayscale because ...
 
@@ -72,24 +72,17 @@ Here is an example of a traffic sign image before and after grayscaling.
 
 ![alt text][image2]
 
-As a last step, I normalized the image data because ...
+As a last step, I normalized the image data because this ensures the features used to train the network are of the same scale(zero mean and unit variance) and hence the optimizer can use the same learning rate for all the weights and bias vectors being optimized to achieve minimum loss.
 
 ####2. Describe how, and identify where in your code, you set up training, validation and testing data. How much data was in each set? Explain what techniques were used to split the data into these sets. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, identify where in your code, and provide example images of the additional data)
 
-The code for splitting the data into training and validation sets is contained in the fifth code cell of the IPython notebook.  
+The data given for this project was already split into training, validation and testing datasets. 
 
-To cross validate my model, I randomly split the training data into a training set and validation set. I did this by ...
-
-My final training set had X number of images. My validation set and test set had Y and Z number of images.
-
-The sixth code cell of the IPython notebook contains the code for augmenting the data set. I decided to generate additional data because ... To add more data to the the data set, I used the following techniques because ... 
+The sixth code cell of the IPython notebook contains the code for augmenting the data set. I decided to generate additional data in order to make the model more robust to changes in real-world conditions such as viewing the sign from an angle, occlusions, brightness variation etc.. To add more data to the the data set, I defined a function which takes in an input image, applies brightness normalization and randomly applies translation (limited to 5 pixels), rotation (limited to +/- 10 degress) and limited affine transformation. I generated 5 augmented images per training image and consider them be a part of the new augmented training set. My final training set had 208794 number of images. My validation set and test set had 4410 and 12630 number of images respectively.
 
 Here is an example of an original image and an augmented image:
 
 ![alt text][image3]
-
-The difference between the original data set and the augmented data set is the following ... 
-
 
 ####3. Describe, and identify where in your code, what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
@@ -100,7 +93,7 @@ My final model consisted of the following layers:
 | Layer         		|     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
 | Input         		| 32x32x3 RGB image   							| 
-| Convolution 3x3     	| 1x1 stride, same padding, outputs 32x32x64 	|
+| Convolution 1x1     	| 1x1 stride, same padding, outputs 32x32x3 	|
 | RELU					|												|
 | Max pooling	      	| 2x2 stride,  outputs 16x16x64 				|
 | Convolution 3x3	    | etc.      									|
@@ -109,21 +102,19 @@ My final model consisted of the following layers:
 |						|												|
 |						|												|
  
-
-
 ####4. Describe how, and identify where in your code, you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
 The code for training the model is located in the eigth cell of the ipython notebook. 
 
-To train the model, I used an ....
+To train the model, I used a softmax with cross entropy with L2 regularization as the loss. The regularizer term was added to the loss with a weight factor of 0.005.  Adam Optimizer with exponetially decaying learning rate was used. The learning rate decays at the rate of 0.99 every epoch. This was found to be the ideal decay rate owing to the fact that the learning rate was still 80% of the original rate after 20 epochs and 60% after 50 epochs. The initial learning rate is set to 0.001 after trial and error. I employed a batch size of 32 which improved accuracy by 1-1.5% on validation set compared to other larger batch sizes. 
 
 ####5. Describe the approach taken for finding a solution. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
 The code for calculating the accuracy of the model is located in the ninth cell of the Ipython notebook.
 
 My final model results were:
-* training set accuracy of ?
-* validation set accuracy of ? 
+* training set accuracy of 99.7% accuracy
+* validation set accuracy of 98.0% accuracy
 * test set accuracy of ?
 
 If an iterative approach was chosen:
