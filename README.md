@@ -9,14 +9,14 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 
-[image1]: ./examples/visualization.jpg "Visualization"
-[image2]: ./examples/grayscale.jpg "Grayscaling"
-[image3]: ./examples/random_noise.jpg "Random Noise"
-[image4]: ./examples/placeholder.png "Traffic Sign 1"
-[image5]: ./examples/placeholder.png "Traffic Sign 2"
-[image6]: ./examples/placeholder.png "Traffic Sign 3"
-[image7]: ./examples/placeholder.png "Traffic Sign 4"
-[image8]: ./examples/placeholder.png "Traffic Sign 5"
+[image1]: ./analysis_images/bar_charts.png "Histograms"
+[image2]: ./analysis_images/augmentation.png "Augmentation"
+[image3]: ./analysis_images/confusion_matrix.png "Confusion Matrix on Validation Set"
+[image4]: ./analysis_images/1.png "Traffic Sign 1"
+[image5]: ./analysis_images/2.png "Traffic Sign 2"
+[image6]: ./analysis_images/3.png "Traffic Sign 3"
+[image7]: ./analysis_images/4.png "Traffic Sign 4"
+[image8]: ./analysis_images/5.png "Traffic Sign 5"
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
@@ -121,9 +121,9 @@ I also employed early termination. I saved the model whenever the validation acc
 The code for calculating the accuracy of the model is located in the tenth cell of the Ipython notebook.
 
 My final model results were:
-* training set accuracy of 99.7%
-* validation set accuracy of 98.16% 
-* test set accuracy of 96.7%
+* training set accuracy of 99.5%
+* validation set accuracy of 98.37% 
+* test set accuracy of 97.17%
 
 * I started with LeNet architecture which had two 5x5 convolutional layers followed by three fully connected layers. It yielded validation accuracy of 87% which I considered as baseline.It was a very simple architecture and was proven to work for digits classification task with 10 classes. Since traffic sign recognition problem had 43 classes and the task itself was more difficult compared to digit recogintion, the model wasn't able to capture all the necessary features with just two 5x5 convolutional layers. 
 
@@ -133,7 +133,11 @@ My final model results were:
  
 * I tried different color spaces (HSV, YUV) and found little improvement. After reading few online materials, I employed a  1x1 convolutional layer at the beginning of the network with 3 channels to automatically act as a colorspace transformer before feeding the data in to the rest of the network. 
 
-* I then employed different data augmentation techniques and finally converged to a function which randomly applied less than 5 pixels of translation, +/- 10 degrees of rotation and limited shearing/angle of view changes. I limited data augmentation to just one augmented image per every image in training set due to memory and computational time constraints. This data augmentation and automatic colorspace transformer increased the accuracy by around 0.8% to 98.36% on validation set, which is my final validation accuracy.
+* I then employed different data augmentation techniques and finally converged to a function which randomly applied less than 5 pixels of translation, +/- 10 degrees of rotation and limited shearing/angle of view changes. I limited data augmentation to just one augmented image per every image in training set due to memory and computational time constraints. This data augmentation and automatic colorspace transformer increased the accuracy by around 0.8% to 98.37% on validation set, which is my final validation accuracy.
+
+Below is the image depicting confusion matrix on validation set: 
+
+![alt text][image3]
 
 ###Test a Model on New Images
 
@@ -152,65 +156,66 @@ Here are the results of the prediction:
 
 | Image			        |     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| Stop Sign      		| Stop sign   									| 
-| Go straight or right     			| Go straight or right										|
-| Right of way at the next intersection					| Right of way at the next intersection											|
 | 30 km/h	      		| 30 km/h					 				|
 | No Entry	| No Entry     							|
+| Go straight or right     			| Go straight or right										|
+| Stop Sign      		| Stop sign   									| 
+| Right of way at the next intersection					| Right of way at the next intersection											|
 
-The model was able to correctly guess 5 of the 5 traffic signs, which gives an accuracy of 100%. This compares favorably to the accuracy on the test set of 96.5%
+The model was able to correctly guess 5 of the 5 traffic signs, which gives an accuracy of 100%. This compares favorably to the accuracy on the test set of 97.17%
 
 ####3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction and identify where in your code softmax probabilities were outputted. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
-The code for computing the top 5 softmax probabilities for each test image is located in the 14th cell of the Ipython notebook.
+The code for computing the top 5 softmax probabilities for each test image is located in the 14th cell of the Ipython notebook. All the traffic signs have large probabilities for their correct label ID. It is clear from the data below that the top 5 signs that get picked are mostly the ones which look similar to the input image. 
 
-For the first image, the model is relatively sure that this is a stop sign (probability of 0.99), and the image does contain a stop sign. The top five soft max probabilities were
+For example, 30 km/h speed limit sign has other speed limit signs in its top 5 predictions. "No Entry" sign has other signs which are mainly "no passing" type of signs. "Go straight and right" sign has similar signs such as Ahead only, turn right, keep left signs. The "Right of way at the next intersection" looks similar to "Pedestrians" sign and as expected, it is the second choice from the network. 
 
-| Probability         	|     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| .99         			| Stop sign   									| 
-| .001     				| U-turn 										|
-| .0005					| Yield											|
-| .0	      			| Bumpy Road					 				|
-| .0				    | Slippery Road      							|
-
-For the second image, the model is relatively sure that this is a stop sign (probability of 0.99). The top five soft max probabilities were
+For the first image, the top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| .99         			| Stop sign   									| 
-| .001     				| U-turn 										|
-| .0005					| Yield											|
-| .0	      			| Bumpy Road					 				|
-| .0				    | Slippery Road      							|
+| 0.9926	      		| 30 km/h					 				|
+| 0.0042	| 20 km/h     							|
+| 0.0014     			| 50 km/h										|
+| 0.0008     		|  70 km/h  									| 
+| 0.0004				| Stop											|
 
-For the third image, the model is relatively sure that this is a stop sign (probability of 0.99). The top five soft max probabilities were
-
-| Probability         	|     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| .99         			| Stop sign   									| 
-| .001     				| U-turn 										|
-| .0005					| Yield											|
-| .0	      			| Bumpy Road					 				|
-| .0				    | Slippery Road      							|
-
-For the fourth image, the model is relatively sure that this is a stop sign (probability of 0.99). The top five soft max probabilities were
+For the second image, the top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| .99         			| Stop sign   									| 
-| .001     				| U-turn 										|
-| .0005					| Yield											|
-| .0	      			| Bumpy Road					 				|
-| .0				    | Slippery Road      							|
+| 0.9997	      		| No Entry					 				|
+| 0.0003	| Stop     							|
+| 0.0000     			| Priority road									|
+| 0.0000     		| No passing for vehicles over 3.5 metric tons   									| 
+| 0.0000				| No passing											|
 
-
-For the fifth image, the model is relatively sure that this is a stop sign (probability of 0.99). The top five soft max probabilities were
+For the third image, the top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| .99         			| Stop sign   									| 
-| .001     				| U-turn 										|
-| .0005					| Yield											|
-| .0	      			| Bumpy Road					 				|
-| .0				    | Slippery Road      							|
+| 0.9984	      		| Go straight or right					 				|
+| 0.0007	| Ahead only     							|
+| 0.0004     			| Keep right										|
+| 0.0004     		| Turn right ahead  									| 
+| 0.0001				| Keep Left											|
+
+For the fourth image, the top five soft max probabilities were
+ 
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 0.9994	      		| Stop sign				 				|
+| 0.0002	| No Entry     							|
+| 0.0001     			| Traffic signals									|
+| 0.0001     		| Priority road   									| 
+| 0.0001				| Bicycles crossing											|
+
+For the fifth image, the top five soft max probabilities were
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 0.9934	      		|  Right of way at the next intersection				 				|
+| 0.0054	| Pedestrians    							|
+| 0.0010     			| Beware of ice or snow										|
+| 0.0001     		| Double curve   									| 
+| 0.0000				| Children crossing											|
