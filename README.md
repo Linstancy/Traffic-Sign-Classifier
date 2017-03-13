@@ -17,6 +17,7 @@ The goals / steps of this project are the following:
 [image6]: ./analysis_images/3.png "Traffic Sign 3"
 [image7]: ./analysis_images/4.png "Traffic Sign 4"
 [image8]: ./analysis_images/5.png "Traffic Sign 5"
+[image9]: ./analysis_images/comparison.png "Comparison between two mis-predicted signs"
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
@@ -56,7 +57,7 @@ Here are the bar charts:
 
 ####1. Describe how, and identify where in your code, you preprocessed the image data. What tecniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc.
 
-The code for this step is contained in the fifth and sixth code cell of the IPython notebook.
+The code for this step is contained in the 6th and 7th code cell of the IPython notebook.
 
 I generate one augmented image for every training image through randomly choosen translation, affine transform and rotation. All these operations are limited to certain scale in order to make sure a given traffic sign doesn't look like another sign after the transformations such as 90 degree or 180 degree rotations. The computational complexity (and hence time) and memory constrained me from generating more augmented data.
 
@@ -70,11 +71,11 @@ As a next preprocessing step, I normalized the training image data because this 
 
 The data given for this project was already split into training, validation and testing datasets. 
 
-The fifth code cell of the IPython notebook contains the code for augmenting the data set. I decided to generate additional data in order to make the model more robust to changes in real-world conditions such as viewing the sign from an angle, occlusions, brightness variation etc.. To add more data to the the data set, I defined a function which takes in an input image, applies brightness normalization and randomly applies translation (limited to 5 pixels), rotation (limited to +/- 10 degress) and limited affine transformation. I generated one augmented image per training image and consider them be a part of the new augmented training set. My final training set had 69598 number of images. My validation set and test set had 4410 and 12630 number of images respectively.
+The 6th code cell of the IPython notebook contains the code for augmenting the data set. I decided to generate additional data in order to make the model more robust to changes in real-world conditions such as viewing the sign from an angle, occlusions, brightness variation etc.. To add more data to the the data set, I defined a function which takes in an input image, applies brightness normalization and randomly applies translation (limited to 5 pixels), rotation (limited to +/- 10 degress) and limited affine transformation. I generated one augmented image per training image and consider them be a part of the new augmented training set. My final training set had 69598 number of images. My validation set and test set had 4410 and 12630 number of images respectively.
 
 ####3. Describe, and identify where in your code, what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
-The code for my final model is located in the seventh cell of the ipython notebook. 
+The code for my final model is located in the 8th cell of the ipython notebook. 
 
 My final model consisted of the following layers:
 
@@ -110,7 +111,7 @@ My final model consisted of the following layers:
  
 ####4. Describe how, and identify where in your code, you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
-The code for training the model is located in the eigth and ninth cell of the ipython notebook. 
+The code for training the model is located in the 9th and 10th cell of the ipython notebook. 
 
 To train the model, I used a softmax with cross entropy loss and added L2 regularization. The regularizer term was added to the loss with a weight factor of 0.005(beta).  Adam Optimizer with exponetially decaying learning rate was used. The learning rate decays at the rate of 0.99 every epoch. This was found to be the ideal decay rate owing to the fact that the learning rate was still 80% of the original rate after 20 epochs and 60% after 50 epochs. The initial learning rate is set to 0.001 after trial and error. I employed a batch size of 64 which improved accuracy by 1-1.5% on validation set compared to other larger batch sizes. 
 
@@ -118,7 +119,7 @@ I also employed early termination. I saved the model whenever the validation acc
 
 ####5. Describe the approach taken for finding a solution. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
-The code for calculating the accuracy of the model is located in the tenth cell of the Ipython notebook.
+The code for calculating the accuracy of the model is located in the 11th cell of the Ipython notebook.
 
 My final model results were:
 * training set accuracy of 99.5%
@@ -139,6 +140,10 @@ Below is the image depicting confusion matrix on validation set:
 
 ![alt text][image3]
 
+As you can see above, the network confused sign 41 (End of no passing) with sign 32(End of all speed and passing limits). Below are one image from each of those two classes which shows that they look similar:
+
+![alt text][image9]
+
 ###Test a Model on New Images
 
 ####1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
@@ -150,26 +155,26 @@ Here are five German traffic signs that I found on the web:
 
 ####2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. Identify where in your code predictions were made. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
-The code for making predictions on my final model is located in the 12th and 13th cells of the Ipython notebook.
+The code for making predictions on my final model is located in the 12th, 13th and 14th cells of the Ipython notebook.
 
 Here are the results of the prediction:
 
 | Image			        |     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
 | 30 km/h	      		| 30 km/h					 				|
+| Stop Sign      		| Stop sign   									| 
 | No Entry	| No Entry     							|
 | Go straight or right     			| Go straight or right										|
-| Stop Sign      		| Stop sign   									| 
 | Right of way at the next intersection					| Right of way at the next intersection											|
 
 The model was able to correctly guess 5 of the 5 traffic signs, which gives an accuracy of 100%. This compares favorably to the accuracy on the test set of 97.17%
 
 ####3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction and identify where in your code softmax probabilities were outputted. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
-The code for computing the top 5 softmax probabilities for each test image is located in the 14th cell of the Ipython notebook. All the traffic signs have large probabilities for their correct label ID. It is clear from the data below that the top 5 signs that get picked are mostly the ones which look similar to the input image. 
+The code for computing the top 5 softmax probabilities for each test image is located in the 15th cell of the Ipython notebook. All the traffic signs have large probabilities (>0.99) for their correct label ID. It is clear from the data below that the top 5 signs that get picked are mostly the ones which look similar to the input image. 
 
 For example, 30 km/h speed limit sign has other speed limit signs in its top 5 predictions. "No Entry" sign has other signs which are mainly "no passing" type of signs. "Go straight and right" sign has similar signs such as Ahead only, turn right, keep left signs. The "Right of way at the next intersection" looks similar to "Pedestrians" sign and as expected, it is the second choice from the network. 
-
+ 
 For the first image, the top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
@@ -181,6 +186,16 @@ For the first image, the top five soft max probabilities were
 | 0.0004				| Stop											|
 
 For the second image, the top five soft max probabilities were
+ 
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| 0.9994	      		| Stop sign				 				|
+| 0.0002	| No Entry     							|
+| 0.0001     			| Traffic signals									|
+| 0.0001     		| Priority road   									| 
+| 0.0001				| Bicycles crossing											|
+
+For the third image, the top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -190,7 +205,7 @@ For the second image, the top five soft max probabilities were
 | 0.0000     		| No passing for vehicles over 3.5 metric tons   									| 
 | 0.0000				| No passing											|
 
-For the third image, the top five soft max probabilities were
+For the fourth image, the top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -200,15 +215,6 @@ For the third image, the top five soft max probabilities were
 | 0.0004     		| Turn right ahead  									| 
 | 0.0001				| Keep Left											|
 
-For the fourth image, the top five soft max probabilities were
- 
-| Probability         	|     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| 0.9994	      		| Stop sign				 				|
-| 0.0002	| No Entry     							|
-| 0.0001     			| Traffic signals									|
-| 0.0001     		| Priority road   									| 
-| 0.0001				| Bicycles crossing											|
 
 For the fifth image, the top five soft max probabilities were
 
