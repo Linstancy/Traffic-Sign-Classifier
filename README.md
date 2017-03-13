@@ -125,22 +125,15 @@ My final model results were:
 * validation set accuracy of 98.16% 
 * test set accuracy of 96.7%
 
-* What was the first architecture that was tried and why was it chosen?
-  I started with LeNet architecture which had two 5x5 convolutional layers followed by three fully connected layers. It yielded validation accuracy of 87% which I considered as baseline.
-* What were some problems with the initial architecture?
-  It was a very simple architecture and was proven to work for digits classification task with 10 classes. Since traffic sign recognition problem had 43 classes and the task itself was more difficult compared to digit recogintion, the model was suffering from underfitting and wasn't able to capture all the necessary features with just two 5x5 convolutional layers. 
-* How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to over fitting or under fitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.
- The next iteration was to simply increase the number of feature maps at each convolutional layers and also add another fully connected layer to the network. Although this increased the validation accuracy to around 95%, the model was overfitting given the fact that the training error reached 99.5% within first five to ten epochs and eventually reached 100%, but validation accuracy increased only slowly and never increased beyond 95%. This also made me reduce learning rate and employ exponentially decaying learning rate. In order to minimize overfitting, I added L2 regularization for the loss and also added dropout to each stage except the first convolutional layer. In order to make the network more deeper and wider, I reduced the convolution filter sizes to 3x3 from 5x5 and increased the number of features maps to 16, 32 and 64 at each convolution layer respectively. I also added a third convolutional layer before the four fully connected layers. This increased the complexity of the network and with reduced batch size of 64 (from 128), the network now yielded 97.5% validation accuracy.
- 
-* Which parameters were tuned? How were they adjusted and why?
-  Batch size, learning rate were tuned in order to make the network slowly 
-* What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
+* I started with LeNet architecture which had two 5x5 convolutional layers followed by three fully connected layers. It yielded validation accuracy of 87% which I considered as baseline.It was a very simple architecture and was proven to work for digits classification task with 10 classes. Since traffic sign recognition problem had 43 classes and the task itself was more difficult compared to digit recogintion, the model wasn't able to capture all the necessary features with just two 5x5 convolutional layers. 
 
-If a well known architecture was chosen:
-* What architecture was chosen?
-* Why did you believe it would be relevant to the traffic sign application?
-* How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well?
+* The next iteration was to simply increase the number of feature maps at each convolutional layers and also add another fully connected layer to the network. Although this increased the validation accuracy to around 95%, the model was overfitting to the training data given the fact that the training error reached 99.5% within first five to ten epochs and eventually reached 100%, but validation accuracy increased sluggishly and never increased beyond 95%. This also made me reduce the learning rate and employ exponentially decaying learning rate. In order to minimize overfitting, I added L2 regularization for the loss and also added dropout to each stage except the first convolutional layer. 
+
+* In order to make the network more deeper and wider to capture more features, I reduced the convolution filter sizes to 3x3 from 5x5 and increased the number of features maps to 16, 32 and 64 at each convolution layer respectively. I also added a third convolutional layer before the four fully connected layers. This increased the complexity of the network and with reduced batch size of 64 (from 128), the network now yielded 97.5% validation accuracy.
  
+* I tried different color spaces (HSV, YUV) and found little improvement. After reading few online materials, I employed a  1x1 convolutional layer at the beginning of the network with 3 channels to automatically act as a colorspace transformer before feeding the data in to the rest of the network. 
+
+* I then employed different data augmentation techniques and finally converged to a function which randomly applied less than 5 pixels of translation, +/- 10 degrees of rotation and limited shearing/angle of view changes. I limited data augmentation to just one augmented image per every image in training set due to memory and computational time constraints. This data augmentation increased the accuracy by around 0.8% to 98.3% on validation set, which is my final validation accuracy.
 
 ###Test a Model on New Images
 
@@ -151,38 +144,71 @@ Here are five German traffic signs that I found on the web:
 ![alt text][image4] ![alt text][image5] ![alt text][image6] 
 ![alt text][image7] ![alt text][image8]
 
-The first image might be difficult to classify because ...
-
 ####2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. Identify where in your code predictions were made. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
-The code for making predictions on my final model is located in the tenth cell of the Ipython notebook.
+The code for making predictions on my final model is located in the 12th and 13th cells of the Ipython notebook.
 
 Here are the results of the prediction:
 
 | Image			        |     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
 | Stop Sign      		| Stop sign   									| 
-| U-turn     			| U-turn 										|
-| Yield					| Yield											|
-| 100 km/h	      		| Bumpy Road					 				|
-| Slippery Road			| Slippery Road      							|
+| Go straight or right     			| Go straight or right										|
+| Right of way at the next intersection					| Right of way at the next intersection											|
+| 30 km/h	      		| 30 km/h					 				|
+| No Entry	| No Entry     							|
 
-
-The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of ...
+The model was able to correctly guess 5 of the 5 traffic signs, which gives an accuracy of 100%. This compares favorably to the accuracy on the test set of 96.5%
 
 ####3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction and identify where in your code softmax probabilities were outputted. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
-The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
+The code for computing the top 5 softmax probabilities for each test image is located in the 14th cell of the Ipython notebook.
 
-For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
+For the first image, the model is relatively sure that this is a stop sign (probability of 0.99), and the image does contain a stop sign. The top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| .60         			| Stop sign   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
+| .99         			| Stop sign   									| 
+| .001     				| U-turn 										|
+| .0005					| Yield											|
+| .0	      			| Bumpy Road					 				|
+| .0				    | Slippery Road      							|
+
+For the second image, the model is relatively sure that this is a stop sign (probability of 0.99). The top five soft max probabilities were
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| .99         			| Stop sign   									| 
+| .001     				| U-turn 										|
+| .0005					| Yield											|
+| .0	      			| Bumpy Road					 				|
+| .0				    | Slippery Road      							|
+
+For the third image, the model is relatively sure that this is a stop sign (probability of 0.99). The top five soft max probabilities were
+
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| .99         			| Stop sign   									| 
+| .001     				| U-turn 										|
+| .0005					| Yield											|
+| .0	      			| Bumpy Road					 				|
+| .0				    | Slippery Road      							|
+
+For the fourth image, the model is relatively sure that this is a stop sign (probability of 0.99). The top five soft max probabilities were
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| .99         			| Stop sign   									| 
+| .001     				| U-turn 										|
+| .0005					| Yield											|
+| .0	      			| Bumpy Road					 				|
+| .0				    | Slippery Road      							|
 
 
-For the second image ... 
+For the fifth image, the model is relatively sure that this is a stop sign (probability of 0.99). The top five soft max probabilities were
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| .99         			| Stop sign   									| 
+| .001     				| U-turn 										|
+| .0005					| Yield											|
+| .0	      			| Bumpy Road					 				|
+| .0				    | Slippery Road      							|
