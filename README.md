@@ -1,12 +1,4 @@
-#**Traffic Sign Recognition** 
-
-##Writeup Template
-
-###You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
----
-
-**Build a Traffic Sign Recognition Project**
+#**Traffic Sign Recognition using Deep Learning** 
 
 The goals / steps of this project are the following:
 * Load the data set (see below for links to the project data set)
@@ -14,8 +6,6 @@ The goals / steps of this project are the following:
 * Design, train and test a model architecture
 * Use the model to make predictions on new images
 * Analyze the softmax probabilities of the new images
-* Summarize the results with a written report
-
 
 [//]: # (Image References)
 
@@ -36,7 +26,7 @@ The goals / steps of this project are the following:
 
 ####1. Provide a Writeup / README that includes all the rubric points and how you addressed each one. You can submit your writeup as markdown or pdf. You can use this template as a guide for writing the report. The submission includes the project code.
 
-You're reading it! and here is a link to my [project code](https://github.com/rajkn90/Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
+This is the README file ! and here is a link to my [project code](https://github.com/rajkn90/Traffic-Sign-Classifier-Project/blob/master/Traffic_Sign_Classifier.ipynb)
 
 ###Data Set Summary & Exploration
 
@@ -54,9 +44,11 @@ signs data set:
 
 ####2. Include an exploratory visualization of the dataset and identify where the code is in your code file.
 
-The code for this step is contained in the third code cell of the IPython notebook.  
+The code for this step is contained in the third, fourth and fifth code cell of the IPython notebook.  
 
-Here is an exploratory visualization of the data set. It is a bar chart showing how the histogram of labels in the training, validation and test set individually and also in the overall dataset. Different traffic signs occur in different frequencies and in real world, this may be the case since some traffic signs are displayed more than the other in any given city or country. This prior distribution of labels is unchanged while training the network owing to the fact that we want our neural network to know this real-world distribution and learn to classify more frequent traffic signs better than the others. 
+One image per class is displayed as well as four bar charts showing how the histogram of labels in the training, validation and test set individually and also in the overall dataset. Different traffic signs occur at different frequencies and in real world, this is mostly the case since some traffic signs are displayed more than the other in any given city or country. This prior distribution of labels is unchanged while training the network owing to the fact that we want our neural network to know this real-world distribution and learn to classify more frequent traffic signs better than the others. 
+
+Here are the bar charts:
 
 ![alt text][image1]
 
@@ -64,25 +56,21 @@ Here is an exploratory visualization of the data set. It is a bar chart showing 
 
 ####1. Describe how, and identify where in your code, you preprocessed the image data. What tecniques were chosen and why did you choose these techniques? Consider including images showing the output of each preprocessing technique. Pre-processing refers to techniques such as converting to grayscale, normalization, etc.
 
-The code for this step is contained in the fifth code cell of the IPython notebook.
+The code for this step is contained in the fifth and sixth code cell of the IPython notebook.
 
-As a first step, I decided to convert the images to grayscale because ...
+I generate one augmented image for every training image through randomly choosen translation, affine transform and rotation. All these operations are limited to certain scale in order to make sure a given traffic sign doesn't look like another sign after the transformations such as 90 degree or 180 degree rotations. The computational complexity (and hence time) and memory constrained me from generating more augmented data.
 
-Here is an example of a traffic sign image before and after grayscaling.
+Here is an example of a traffic sign image and its corresponding randomly augmented image.
 
 ![alt text][image2]
 
-As a last step, I normalized the image data because this ensures the features used to train the network are of the same scale(zero mean and unit variance) and hence the optimizer can use the same learning rate for all the weights and bias vectors being optimized to achieve minimum loss.
+As a next preprocessing step, I normalized the training image data because this ensures the features used to train the network are of the same scale(zero mean and unit variance) and hence the optimizer can use the same learning rate for all the weights and bias vectors being optimized to achieve minimum loss. I also pre-processed the validation and testing datasets by using the mean and standard deviations computed for the training set.
 
 ####2. Describe how, and identify where in your code, you set up training, validation and testing data. How much data was in each set? Explain what techniques were used to split the data into these sets. (OPTIONAL: As described in the "Stand Out Suggestions" part of the rubric, if you generated additional data for training, describe why you decided to generate additional data, how you generated the data, identify where in your code, and provide example images of the additional data)
 
 The data given for this project was already split into training, validation and testing datasets. 
 
-The sixth code cell of the IPython notebook contains the code for augmenting the data set. I decided to generate additional data in order to make the model more robust to changes in real-world conditions such as viewing the sign from an angle, occlusions, brightness variation etc.. To add more data to the the data set, I defined a function which takes in an input image, applies brightness normalization and randomly applies translation (limited to 5 pixels), rotation (limited to +/- 10 degress) and limited affine transformation. I generated 5 augmented images per training image and consider them be a part of the new augmented training set. My final training set had 208794 number of images. My validation set and test set had 4410 and 12630 number of images respectively.
-
-Here is an example of an original image and an augmented image:
-
-![alt text][image3]
+The fifth code cell of the IPython notebook contains the code for augmenting the data set. I decided to generate additional data in order to make the model more robust to changes in real-world conditions such as viewing the sign from an angle, occlusions, brightness variation etc.. To add more data to the the data set, I defined a function which takes in an input image, applies brightness normalization and randomly applies translation (limited to 5 pixels), rotation (limited to +/- 10 degress) and limited affine transformation. I generated one augmented image per training image and consider them be a part of the new augmented training set. My final training set had 69598 number of images. My validation set and test set had 4410 and 12630 number of images respectively.
 
 ####3. Describe, and identify where in your code, what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
