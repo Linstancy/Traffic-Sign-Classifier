@@ -140,7 +140,7 @@ Below is the image depicting confusion matrix on validation set:
 
 ![alt text][image3]
 
-As you can see above, the network confused sign 41 (End of no passing) with sign 32(End of all speed and passing limits). Below are one image from each of those two classes which shows that they look similar:
+As you can see above, the network confused sign 41 (End of no passing) as sign 32(End of all speed and passing limits) the most. Below are samples of images from each of those two classes which shows that they look very similar:
 
 ![alt text][image9]
 
@@ -175,7 +175,7 @@ The code for computing the top 5 softmax probabilities for each test image is lo
 
 For example, 30 km/h speed limit sign has other speed limit signs in its top 5 predictions. "No Entry" sign has other signs which are mainly "no passing" type of signs. "Go straight and right" sign has similar signs such as Ahead only, turn right, keep left signs. The "Right of way at the next intersection" looks similar to "Pedestrians" sign and as expected, it is the second choice from the network. 
  
-For the first image, the top five soft max probabilities were
+For the 30 km/h image, the top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -185,7 +185,7 @@ For the first image, the top five soft max probabilities were
 | 0.0008     		|  70 km/h  									| 
 | 0.0004				| Stop											|
 
-For the second image, the top five soft max probabilities were
+For the stop sign image, the top five soft max probabilities were
  
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -195,7 +195,7 @@ For the second image, the top five soft max probabilities were
 | 0.0001     		| Priority road   									| 
 | 0.0001				| Bicycles crossing											|
 
-For the third image, the top five soft max probabilities were
+For the "No Entry" image, the top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -205,7 +205,7 @@ For the third image, the top five soft max probabilities were
 | 0.0000     		| No passing for vehicles over 3.5 metric tons   									| 
 | 0.0000				| No passing											|
 
-For the fourth image, the top five soft max probabilities were
+For the "Go straight or right" image, the top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
@@ -216,7 +216,7 @@ For the fourth image, the top five soft max probabilities were
 | 0.0001				| Keep Left											|
 
 
-For the fifth image, the top five soft max probabilities were
+For the "Right of way at the next intersection" image, the top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
