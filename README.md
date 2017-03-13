@@ -133,7 +133,7 @@ My final model results were:
  
 * I tried different color spaces (HSV, YUV) and found little improvement. After reading few online materials, I employed a  1x1 convolutional layer at the beginning of the network with 3 channels to automatically act as a colorspace transformer before feeding the data in to the rest of the network. 
 
-* I then employed different data augmentation techniques and finally converged to a function which randomly applied less than 5 pixels of translation, +/- 10 degrees of rotation and limited shearing/angle of view changes. I limited data augmentation to just one augmented image per every image in training set due to memory and computational time constraints. This data augmentation increased the accuracy by around 0.8% to 98.3% on validation set, which is my final validation accuracy.
+* I then employed different data augmentation techniques and finally converged to a function which randomly applied less than 5 pixels of translation, +/- 10 degrees of rotation and limited shearing/angle of view changes. I limited data augmentation to just one augmented image per every image in training set due to memory and computational time constraints. This data augmentation and automatic colorspace transformer increased the accuracy by around 0.8% to 98.36% on validation set, which is my final validation accuracy.
 
 ###Test a Model on New Images
 
@@ -195,6 +195,7 @@ For the third image, the model is relatively sure that this is a stop sign (prob
 | .0				    | Slippery Road      							|
 
 For the fourth image, the model is relatively sure that this is a stop sign (probability of 0.99). The top five soft max probabilities were
+
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
 | .99         			| Stop sign   									| 
@@ -205,6 +206,7 @@ For the fourth image, the model is relatively sure that this is a stop sign (pro
 
 
 For the fifth image, the model is relatively sure that this is a stop sign (probability of 0.99). The top five soft max probabilities were
+
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
 | .99         			| Stop sign   									| 
