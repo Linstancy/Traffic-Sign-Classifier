@@ -110,24 +110,30 @@ My final model consisted of the following layers:
  
 ####4. Describe how, and identify where in your code, you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
-The code for training the model is located in the eigth cell of the ipython notebook. 
+The code for training the model is located in the eigth and ninth cell of the ipython notebook. 
 
-To train the model, I used a softmax with cross entropy with L2 regularization as the loss. The regularizer term was added to the loss with a weight factor of 0.005.  Adam Optimizer with exponetially decaying learning rate was used. The learning rate decays at the rate of 0.99 every epoch. This was found to be the ideal decay rate owing to the fact that the learning rate was still 80% of the original rate after 20 epochs and 60% after 50 epochs. The initial learning rate is set to 0.001 after trial and error. I employed a batch size of 32 which improved accuracy by 1-1.5% on validation set compared to other larger batch sizes. 
+To train the model, I used a softmax with cross entropy loss and added L2 regularization. The regularizer term was added to the loss with a weight factor of 0.005(beta).  Adam Optimizer with exponetially decaying learning rate was used. The learning rate decays at the rate of 0.99 every epoch. This was found to be the ideal decay rate owing to the fact that the learning rate was still 80% of the original rate after 20 epochs and 60% after 50 epochs. The initial learning rate is set to 0.001 after trial and error. I employed a batch size of 64 which improved accuracy by 1-1.5% on validation set compared to other larger batch sizes. 
+
+I also employed early termination. I saved the model whenever the validation accuracy improved compared to the previous best and stopped training when validation accuracy didn't increase for last 20 epochs.
 
 ####5. Describe the approach taken for finding a solution. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
 
-The code for calculating the accuracy of the model is located in the ninth cell of the Ipython notebook.
+The code for calculating the accuracy of the model is located in the tenth cell of the Ipython notebook.
 
 My final model results were:
-* training set accuracy of 99.7% accuracy
-* validation set accuracy of 98.0% accuracy
-* test set accuracy of ?
+* training set accuracy of 99.7%
+* validation set accuracy of 98.16% 
+* test set accuracy of 96.7%
 
-If an iterative approach was chosen:
 * What was the first architecture that was tried and why was it chosen?
+  I started with LeNet architecture which had two 5x5 convolutional layers followed by three fully connected layers. It yielded validation accuracy of 87% which I considered as baseline.
 * What were some problems with the initial architecture?
+  It was a very simple architecture and was proven to work for digits classification task with 10 classes. Since traffic sign recognition problem had 43 classes and the task itself was more difficult compared to digit recogintion, the model was suffering from underfitting and wasn't able to capture all the necessary features with just two 5x5 convolutional layers. 
 * How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to over fitting or under fitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.
+ The next iteration was to simply increase the number of feature maps at each convolutional layers and also add another fully connected layer to the network. Although this increased the validation accuracy to around 95%, the model was overfitting given the fact that the training error reached 99.5% within first five to ten epochs and eventually reached 100%, but validation accuracy increased only slowly and never increased beyond 95%. This also made me reduce learning rate and employ exponentially decaying learning rate. In order to minimize overfitting, I added L2 regularization for the loss and also added dropout to each stage except the first convolutional layer. In order to make the network more deeper and wider, I reduced the convolution filter sizes to 3x3 from 5x5 and increased the number of features maps to 16, 32 and 64 at each convolution layer respectively. I also added a third convolutional layer before the four fully connected layers. This increased the complexity of the network and with reduced batch size of 64 (from 128), the network now yielded 97.5% validation accuracy.
+ 
 * Which parameters were tuned? How were they adjusted and why?
+  Batch size, learning rate were tuned in order to make the network slowly 
 * What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
 
 If a well known architecture was chosen:
