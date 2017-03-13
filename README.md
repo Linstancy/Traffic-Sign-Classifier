@@ -81,11 +81,29 @@ My final model consisted of the following layers:
 | Layer         		|     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
 | Input         		| 32x32x3 RGB image   							| 
-| Convolution 1x1     	| 1x1 stride, same padding, outputs 32x32x3 	|
+| Convolution 1x1     	| 1x1 stride, same padding, outputs 32x32x3 (Learns best color space)	|
 | RELU					|												|
-| Max pooling	      	| 2x2 stride,  outputs 16x16x64 				|
-| Convolution 3x3	    | etc.      									|
-| Fully connected		| etc.        									|
+| Convolution 3x3     	| 1x1 stride, valid padding, outputs 30x30x32	|
+| RELU					|												|
+| Dropout					|				With keep probability = 0.5								|
+| Convolution 3x3     	| 1x1 stride, valid padding, outputs 28x28x64	|
+| RELU					|												|
+| Max pooling	2x2      	| 2x2 stride,  outputs 14x14x64 				|
+| Dropout					|				With keep probability = 0.5								|
+| Convolution 3x3	    | 1x1 stride, valid padding, outputs 12x12x128     									|
+| RELU					|												|
+| Max pooling	2x2      	| 2x2 stride,  outputs 6x6x128 				|
+| Dropout					|				With keep probability = 0.5								|
+| Fully connected		| Inputs = 4608 (6x6x128)  Outputs = 1024       									|
+| RELU					|												|
+| Dropout					|				With keep probability = 0.5								|
+| Fully connected		| Inputs = 1024 Outputs = 1024       									|
+| RELU					|												|
+| Dropout					|				With keep probability = 0.5								|
+| Fully connected		| Inputs = 1024 Outputs = 512       									|
+| RELU					|												|
+| Dropout					|				With keep probability = 0.5								|
+| Fully connected		| Inputs = 512 Outputs = 43 (Number of classes)       									|
 | Softmax				| etc.        									|
 |						|												|
 |						|												|
