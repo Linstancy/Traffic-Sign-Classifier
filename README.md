@@ -12,11 +12,6 @@ The goals / steps of this project are the following:
 [image1]: ./analysis_images/bar_charts.png "Histograms"
 [image2]: ./analysis_images/augmentation.png "Augmentation"
 [image3]: ./analysis_images/confusion_matrix.png "Confusion Matrix on Validation Set"
-[image4]: ./analysis_images/1.png "Traffic Sign 1"
-[image5]: ./analysis_images/2.png "Traffic Sign 2"
-[image6]: ./analysis_images/3.png "Traffic Sign 3"
-[image7]: ./analysis_images/4.png "Traffic Sign 4"
-[image8]: ./analysis_images/5.png "Traffic Sign 5"
 [image9]: ./analysis_images/comparison.png "Comparison between two mis-predicted signs"
 
 ## Rubric Points
@@ -148,10 +143,27 @@ As you can see above, the network confused sign 41 (End of no passing) as sign 3
 
 ####1. Choose five German traffic signs found on the web and provide them in the report. For each image, discuss what quality or qualities might be difficult to classify.
 
-Here are five German traffic signs that I found on the web:
+Here are five German traffic signs that I found on the web and transformed them to make them look realistic as well as difficult for the network by random translation, rotation, shearing and brightness adjustment method that I used for data augmentation:
 
-![alt text][image4] ![alt text][image5] ![alt text][image6] 
-![alt text][image7] ![alt text][image8]
+The first image is rotated and sheared, the 30 km/h speed limit sign looks as if being viewed from a tilted camera. 
+
+<img src="./analysis_images/1.png" alt="Traffic Sign 1" width="128"/>
+
+The second image is translated and has shaded area on the right and bottom parts of the image.
+
+<img src="./analysis_images/2.png" alt="Traffic Sign 2" width="128"/>
+
+The third image is rotated, translated and sheared.
+
+<img src="./analysis_images/3.png" alt="Traffic Sign 3" width="128"/>
+
+The fourth image has been translated, rotated and the sign itself is not fully visible and occluded to some extent.
+
+<img src="./analysis_images/4.png" alt="Traffic Sign 4" width="128"/>
+
+The fifth image has little translation or rotation, but it's brightness has been reduced.
+
+<img src="./analysis_images/5.png" alt="Traffic Sign 5" width="128"/>
 
 ####2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. Identify where in your code predictions were made. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
@@ -171,57 +183,56 @@ The model was able to correctly guess 5 of the 5 traffic signs, which gives an a
 
 ####3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction and identify where in your code softmax probabilities were outputted. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
-The code for computing the top 5 softmax probabilities for each test image is located in the 15th cell of the Ipython notebook. All the traffic signs have large probabilities (>0.99) for their correct label ID. It is clear from the data below that the top 5 signs that get picked are mostly the ones which look similar to the input image. 
+The code for computing the top 5 softmax probabilities for each test image is located in the 15th cell of the Ipython notebook. All the traffic signs have large probabilities for their correct label ID. It is interesting (and expected) that the top 5 signs that get picked are very closely related to the input test image. 
 
-For example, 30 km/h speed limit sign has other speed limit signs in its top 5 predictions. "No Entry" sign has other signs which are mainly "no passing" type of signs. "Go straight and right" sign has similar signs such as Ahead only, turn right, keep left signs. The "Right of way at the next intersection" looks similar to "Pedestrians" sign and as expected, it is the second choice from the network. 
- 
+For example, for the 30 km/h speed limit sign test image, the top 5 predictions are other speed limit signs. "No Entry" input test sign's top predictions has other signs which are mainly "no passing" type of signs. "Go straight and right" test image returns other directional signs such "Ahead only", "turn right" and "turn left" signs among its top predictions.
+
 For the 30 km/h image, the top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| 0.9926	      		| 30 km/h					 				|
-| 0.0042	| 20 km/h     							|
-| 0.0014     			| 50 km/h										|
-| 0.0008     		|  70 km/h  									| 
-| 0.0004				| Stop											|
+| 0.9746	      		| 30 km/h					 				|
+| 0.0101	| 50 km/h    							|
+| 0.0072     			| 20 km/h									|
+| 0.0027     		|  70 km/h  									| 
+| 0.0012				| 100 km/h 											|
 
 For the stop sign image, the top five soft max probabilities were
  
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| 0.9994	      		| Stop sign				 				|
-| 0.0002	| No Entry     							|
-| 0.0001     			| Traffic signals									|
-| 0.0001     		| Priority road   									| 
-| 0.0001				| Bicycles crossing											|
-
+| 0.9492	      		| Stop sign				 				|
+| 0.0240	| Priority road    							|
+| 0.0063     			| 		No Entry						|
+| 0.0042     		| 20 km/h   									| 
+| 0.0027				| Traffic Signals										|
+ 
 For the "No Entry" image, the top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| 0.9997	      		| No Entry					 				|
-| 0.0003	| Stop     							|
-| 0.0000     			| Priority road									|
+| 0.9988	      		| No Entry					 				|
+| 0.0011	| Stop     							|
+| 0.0001     			| Priority road									|
 | 0.0000     		| No passing for vehicles over 3.5 metric tons   									| 
 | 0.0000				| No passing											|
 
-For the "Go straight or right" image, the top five soft max probabilities were
+For the "Go straight or right" image, the top five soft max probabilities were as shown below. Here, even though the network predicted the sign correctly, it is not as certain as the other test images since the top most probability is around 84%. The network's second choice is "Ahead Only" sign which is very close to the input sign and given that our input image is translated and sheared, it may start resembling "ahead only" sign and we can expect the network to be little less confident about its first choice.
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| 0.9984	      		| Go straight or right					 				|
-| 0.0007	| Ahead only     							|
-| 0.0004     			| Keep right										|
-| 0.0004     		| Turn right ahead  									| 
-| 0.0001				| Keep Left											|
-
+| 0.8483	      		| Go straight or right					 				|
+| 0.1316	| Ahead only     							|
+| 0.0097     			| Keep right										|
+| 0.0053     		|	Turn left ahead 					| 
+| 0.0034				| Turn right ahead 											|
 
 For the "Right of way at the next intersection" image, the top five soft max probabilities were
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| 0.9934	      		|  Right of way at the next intersection				 				|
-| 0.0054	| Pedestrians    							|
-| 0.0010     			| Beware of ice or snow										|
-| 0.0001     		| Double curve   									| 
-| 0.0000				| Children crossing											|
+| 0.9696	      		|  Right of way at the next intersection				 				|
+| 0.0238	| Beware of ice or snow   							|
+| 0.0019     			| 	Pedestrians									|
+| 0.0011     		| Priority road									| 
+| 0.0008				| End of no passing by vehicles over 3.5 metric tons										|
