@@ -622,7 +622,7 @@ for image_file in test_images:
     image /= training_std
     testing_images_array.append(image)
     #print(image.shape)
-
+    
 testing_images_array = np.asarray(testing_images_array, dtype = "float32")
 
 
